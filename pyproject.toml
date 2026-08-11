@@ -1,0 +1,29 @@
+[project]
+name = "tkinterex"
+version = "0.1.0"
+description = "A package that adds extension features to tkinter"
+readme = "README_pypi.md"
+authors = [{ name = "fangface" }]
+requires-python = ">=3.9"
+dependencies = []
+license = { text = "MIT" }
+keywords = ["tkinter", "ui"]
+
+[project.urls]
+Homepage = "https://github.com/fangface-hub/tkinterex"
+Repository = "https://github.com/fangface-hub/tkinterex"
+Issues = "https://github.com/fangface-hub/tkinterex/issues"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/tkinterex"]
+
+[dependency-groups]
+dev = ["pytest>=8.0", "coverage>=7.0"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
