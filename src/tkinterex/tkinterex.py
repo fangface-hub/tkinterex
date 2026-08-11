@@ -1,6 +1,8 @@
 # python3
 """tkinter extensions."""
 
+from __future__ import annotations
+
 from tkinter import (
     END,
     LEFT,
