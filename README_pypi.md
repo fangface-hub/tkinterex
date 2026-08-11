@@ -23,7 +23,7 @@ print(entry.value)  # "hello"
 ```
 
 | Member  | Type             | Description                        |
-|---------|------------------|------------------------------------||
+|---------|------------------|------------------------------------|
 | `value` | `str` (property) | Get or set the current text value. |
 
 ---
@@ -40,8 +40,8 @@ cb.value = True
 print(cb.value)  # True
 ```
 
-| Member  | Type              | Description                   |
-|---------|-------------------|-------------------------------|
+| Member | Type | Description |
+| --- | --- | --- |
 | `value` | `bool` (property) | Get or set the checked state. |
 
 ---
@@ -62,10 +62,10 @@ print(lb.curselection_list)   # ["item 1"]
 lb.curselection_list = ["item 2"]
 ```
 
-| Member              | Type                   | Description                                           |
-|---------------------|------------------------|-------------------------------------------------------|
-| `listbox`           | `Listbox`              | The internal `Listbox` widget.                        |
-| `scrollbar`         | `Scrollbar`            | The internal vertical `Scrollbar`.                    |
+| Member | Type | Description |
+| --- | --- | --- |
+| `listbox` | `Listbox` | The internal `Listbox` widget. |
+| `scrollbar` | `Scrollbar` | The internal vertical `Scrollbar`. |
 | `curselection_list` | `list[str]` (property) | Get or set the selected items by their string values. |
 
 ---
@@ -83,9 +83,9 @@ show_modal_window(root, dialog)
 # execution resumes here after the dialog is closed
 ```
 
-| Parameter      | Type       | Description                           |
-|----------------|------------|---------------------------------------|
-| `parent`       | `Tk`       | The parent window.                    |
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `parent` | `Tk` | The parent window. |
 | `modal_window` | `Toplevel` | The dialog window to display modally. |
 
 ---
@@ -104,8 +104,8 @@ if win.selected_index is not None:
     print(f"Selected index: {win.selected_index}")
 ```
 
-| Member           | Type          | Description                                         |
-|------------------|---------------|-----------------------------------------------------|
+| Member | Type | Description |
+| --- | --- | --- |
 | `selected_index` | `int \| None` | Index of the selected item, or `None` if cancelled. |
 
 ## License
