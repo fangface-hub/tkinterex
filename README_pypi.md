@@ -102,11 +102,13 @@ show_modal_window(root, win)
 
 if win.selected_index is not None:
     print(f"Selected index: {win.selected_index}")
+    print(f"Selected item:  {win.selected_item}")
 ```
 
-| Member | Type | Description |
-| --- | --- | --- |
+| Member           | Type          | Description                                         |
+| ---------------- | ------------- | --------------------------------------------------- |
 | `selected_index` | `int \| None` | Index of the selected item, or `None` if cancelled. |
+| `selected_item`  | `str \| None` | Text of the selected item, or `None` if cancelled.  |
 
 ## License
 

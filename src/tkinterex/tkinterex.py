@@ -178,6 +178,7 @@ class ListWindow(Toplevel):
         self.protocol("WM_DELETE_WINDOW", self.close_window)
         self.title(title)
         self.selected_index = None
+        self._items = list(items)
         max_length = max(len(item) for item in items)
         frm1 = Frame(self)
         self.lst = Listbox(frm1, width=max_length)
@@ -209,6 +210,13 @@ class ListWindow(Toplevel):
         if selected_index:
             self.selected_index = selected_index[0]
         self.close_window()
+
+    @property
+    def selected_item(self) -> str | None:
+        """Text of the selected item, or None if cancelled."""
+        if self.selected_index is None:
+            return None
+        return self._items[self.selected_index]
 
     def close_window(self):
         """

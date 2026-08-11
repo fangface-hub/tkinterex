@@ -117,6 +117,17 @@ class TestListWindow:
         win.select_item()
         assert win.selected_index == 1
 
+    def test_selected_item_returns_text(self, root):
+        win = ListWindow(root, "Test", ["a", "b", "c"])
+        win.lst.selection_set(2)
+        win.select_item()
+        assert win.selected_item == "c"
+
+    def test_selected_item_none_when_cancelled(self, root):
+        win = ListWindow(root, "Test", ["a", "b", "c"])
+        win.close_window()
+        assert win.selected_item is None
+
     def test_select_item_without_selection(self, root):
         win = ListWindow(root, "Test", ["a", "b", "c"])
         win.select_item()
