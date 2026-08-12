@@ -37,6 +37,40 @@ README.md             # This file (developer notes)
 README_pypi.md        # User-facing documentation published to PyPI
 ```
 
+## Example Usage
+
+```python
+import tkinter as tk
+
+from tkinterex import (
+    CheckbuttonEx,
+    ComboboxEx,
+    EntryEx,
+    TextEx,
+)
+
+root = tk.Tk()
+
+name = EntryEx(root)
+name.value = "Alice"
+
+enabled = CheckbuttonEx(root, text="Enabled")
+enabled.value = True
+
+city = ComboboxEx(root, values=["Tokyo", "Osaka", "Kyoto"])
+city.value = "Tokyo"
+
+memo = TextEx(root, height=5, width=30)
+memo.value = "hello\nworld"
+
+print(name.value)
+print(enabled.value)
+print(city.value)
+print(memo.value)
+
+root.mainloop()
+```
+
 ## Version Bumping
 
 Use the provided PowerShell scripts to bump the version in `pyproject.toml`:

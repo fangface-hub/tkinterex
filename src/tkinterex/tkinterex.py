@@ -12,10 +12,11 @@ from tkinter import (
     Listbox,
     Scrollbar,
     StringVar,
+    Text,
     Tk,
     Toplevel,
 )
-from tkinter.ttk import Checkbutton, Entry
+from tkinter.ttk import Checkbutton, Combobox, Entry
 
 
 class EntryEx(Entry):
@@ -66,6 +67,47 @@ class CheckbuttonEx(Checkbutton):
     def value(self, new_value) -> None:
         """Set the value (setter)."""
         self.var.set(new_value)
+
+
+class ComboboxEx(Combobox):
+    """Custom Combobox widget.
+    Uses StringVar for getting and setting values.
+    """
+
+    def __init__(self, master=None, **kwargs):
+        self.var = StringVar()
+        super().__init__(master, textvariable=self.var, **kwargs)
+
+    @property
+    def value(self) -> str:
+        """Get the value (getter)."""
+        return self.var.get()
+
+    @value.setter
+    def value(self, new_value) -> None:
+        """Set the value (setter)."""
+        self.var.set(new_value)
+
+
+class TextEx(Text):
+    """Custom Text widget.
+    Uses the current text as the value.
+    """
+
+    def __init__(self, master=None, **kwargs):
+        super().__init__(master, **kwargs)
+
+    @property
+    def value(self) -> str:
+        """Get the value (getter)."""
+        return self.get("1.0", END).rstrip("\n")
+
+    @value.setter
+    def value(self, new_value) -> None:
+        """Set the value (setter)."""
+        self.delete("1.0", END)
+        if new_value is not None:
+            self.insert("1.0", str(new_value))
 
 
 class ListboxEx(Frame):
@@ -231,3 +273,87 @@ class ListWindow(Toplevel):
         """
         self.grab_release()
         self.destroy()
+
+
+class ConfirmDialog(Toplevel):
+    """Dialog that asks the user to choose from a set of buttons."""
+
+    def __init__(self, parent, message: str, buttons: list[tuple[str, str]]):
+        self.parent = parent
+        super().__init__(parent)
+        self._result = None
+        self.title("Select")
+        self.protocol("WM_DELETE_WINDOW", self.close_window)
+
+        self.message = message
+        self.buttons = list(buttons)
+
+        self.label = Button(self, text=message, state="disabled")
+        self.label.pack(padx=20, pady=(12, 8))
+
+        self.button_frame = Frame(self)
+        self.button_frame.pack(padx=20, pady=(0, 12))
+
+        self._buttons = {}
+        for key, label_text in self.buttons:
+            btn = Button(
+                self.button_frame,
+                text=label_text,
+                command=lambda key=key: self._set_result(key),
+            )
+            btn.pack(side=LEFT, padx=6)
+            self._buttons[key] = btn
+
+    def _set_result(self, result):
+        """Store the selected result and close the dialog."""
+        self._result = result
+        self.close_window()
+
+    @property
+    def value(self):
+        """Return the selected button key, or None if closed/cancelled."""
+        return self._result
+
+    def show(self):
+        """Display the dialog modally and return the selected button key."""
+        show_modal_window(self.parent, self)
+        return self.value
+
+    def close_window(self):
+        """Close the window and clear the result if no selection was made."""
+        if not self.winfo_exists():
+            return
+        self.grab_release()
+        self.destroy()
+        # preserve the latest result if one was selected
+
+
+class SelectDialog:
+    """ListWindow-based selection dialog that hides key/label mapping."""
+
+    def __init__(self, parent, title: str, items: list[tuple[str, str]]):
+        self.parent = parent
+        self.title = title
+        self.items = list(items)
+        self._result = None
+        self._window = None
+
+    @property
+    def value(self):
+        """Return the selected item key or None when cancelled."""
+        return self._result
+
+    def show(self):
+        """Display the ListWindow modal and return the selected key."""
+        labels = [label for _, label in self.items]
+        self._window = ListWindow(self.parent, self.title, labels)
+        self._window.selected_index = None
+        show_modal_window(self.parent, self._window)
+
+        if self._window.selected_index is None:
+            self._result = None
+            return None
+
+        key, _ = self.items[self._window.selected_index]
+        self._result = key
+        return self._result

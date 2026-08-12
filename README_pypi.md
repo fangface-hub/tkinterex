@@ -46,6 +46,42 @@ print(cb.value)  # True
 
 ---
 
+### `ComboboxEx`
+
+A `ttk.Combobox` subclass that keeps its own `StringVar` internally, exposing a simple `value` property.
+
+```python
+from tkinterex import ComboboxEx
+
+combo = ComboboxEx(master, values=["Tokyo", "Osaka", "Kyoto"])
+combo.value = "Osaka"
+print(combo.value)  # "Osaka"
+```
+
+| Member | Type | Description |
+| --- | --- | --- |
+| `value` | `str` (property) | Get or set the selected item text. |
+
+---
+
+### `TextEx`
+
+A `tkinter.Text` subclass exposing a simple `value` property for getting and setting the whole text content.
+
+```python
+from tkinterex import TextEx
+
+text = TextEx(master, height=5, width=30)
+text.value = "hello\nworld"
+print(text.value)  # "hello\nworld"
+```
+
+| Member | Type | Description |
+| --- | --- | --- |
+| `value` | `str` (property) | Get or set the entire text content. |
+
+---
+
 ### `ListboxEx`
 
 A `Frame`-based widget that wraps a `Listbox` with a vertical `Scrollbar`. All standard `Listbox` methods are transparently delegated.
@@ -90,25 +126,61 @@ show_modal_window(root, dialog)
 
 ---
 
-### `ListWindow`
+### `ConfirmDialog`
 
-A ready-made modal `Toplevel` that presents a list of items and lets the user select one.
+A modal confirmation dialog with a list of button keys and labels. It returns the selected key from `show()` and also exposes the same value through `.value`.
 
 ```python
-from tkinterex import ListWindow, show_modal_window
+from tkinterex import ConfirmDialog
 
-win = ListWindow(root, title="Choose an item", items=["Apple", "Banana", "Cherry"])
-show_modal_window(root, win)
+dlg = ConfirmDialog(
+    root,
+    message="Choose an action:",
+    buttons=[
+        ("save", "Save"),
+        ("discard", "Discard"),
+        ("cancel", "Cancel"),
+    ],
+)
 
-if win.selected_index is not None:
-    print(f"Selected index: {win.selected_index}")
-    print(f"Selected item:  {win.selected_item}")
+result = dlg.show()
+print(result)  # "save", "discard", "cancel", or None
 ```
 
-| Member           | Type          | Description                                         |
-| ---------------- | ------------- | --------------------------------------------------- |
-| `selected_index` | `int \| None` | Index of the selected item, or `None` if cancelled. |
-| `selected_item`  | `str \| None` | Text of the selected item, or `None` if cancelled.  |
+| Member | Type | Description |
+| --- | --- | --- |
+| `show()` | `str \| None` | Displays the dialog modally and returns the selected key. |
+| `value` | `str \| None` (property) | Same value as `show()`. |
+
+---
+
+### `SelectDialog`
+
+A `ListWindow`-backed selection dialog that hides the internal key-label mapping and exposes a clean data-oriented API.
+
+```python
+from tkinterex import SelectDialog
+
+dlg = SelectDialog(
+    root,
+    title="Select an action",
+    items=[
+        ("save", "Save file"),
+        ("discard", "Discard changes"),
+        ("cancel", "Cancel"),
+    ],
+)
+
+result = dlg.show()
+print(result)  # "save", "discard", "cancel", or None
+```
+
+| Member | Type | Description |
+| --- | --- | --- |
+| `show()` | `str \| None` | Displays the selection dialog and returns the selected key. |
+| `value` | `str \| None` (property) | Same value as `show()`. |
+
+---
 
 ## License
 
