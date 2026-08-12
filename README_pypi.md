@@ -131,7 +131,11 @@ show_modal_window(root, dialog)
 A modal confirmation dialog with a list of button keys and labels. It returns the selected key from `show()` and also exposes the same value through `.value`.
 
 ```python
+import tkinter as tk
 from tkinterex import ConfirmDialog
+
+root = tk.Tk()
+root.withdraw()
 
 dlg = ConfirmDialog(
     root,
@@ -145,6 +149,7 @@ dlg = ConfirmDialog(
 
 result = dlg.show()
 print(result)  # "save", "discard", "cancel", or None
+root.destroy()
 ```
 
 | Member | Type | Description |
@@ -159,7 +164,11 @@ print(result)  # "save", "discard", "cancel", or None
 A `ListWindow`-backed selection dialog that hides the internal key-label mapping and exposes a clean data-oriented API.
 
 ```python
+import tkinter as tk
 from tkinterex import SelectDialog
+
+root = tk.Tk()
+root.withdraw()
 
 dlg = SelectDialog(
     root,
@@ -173,6 +182,7 @@ dlg = SelectDialog(
 
 result = dlg.show()
 print(result)  # "save", "discard", "cancel", or None
+root.destroy()
 ```
 
 | Member | Type | Description |

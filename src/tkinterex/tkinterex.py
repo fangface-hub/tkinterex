@@ -9,6 +9,7 @@ from tkinter import (
     BooleanVar,
     Button,
     Frame,
+    Label,
     Listbox,
     Scrollbar,
     StringVar,
@@ -288,7 +289,7 @@ class ConfirmDialog(Toplevel):
         self.message = message
         self.buttons = list(buttons)
 
-        self.label = Button(self, text=message, state="disabled")
+        self.label = Label(self, text=message, justify="center")
         self.label.pack(padx=20, pady=(12, 8))
 
         self.button_frame = Frame(self)
