@@ -195,6 +195,7 @@ def show_modal_window(parent: Tk, modal_window: Toplevel) -> None:
     modal_window.focus_force()
     modal_window.transient(parent)
     modal_window.grab_set()
+    modal_window.deiconify()
     parent.wait_window(modal_window)
 
 
