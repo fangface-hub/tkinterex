@@ -183,11 +183,13 @@ def show_modal_window(parent: Tk, modal_window: Toplevel) -> None:
         x = 15
     elif screen_width < x + modal_window.winfo_reqwidth() + 15:
         x -= x + modal_window.winfo_reqwidth() + 15 - screen_width
+    x = max(15, x)
     # Clamp vertical position within screen bounds
     if y < 50:
         y = 50
     elif screen_height < y + modal_window.winfo_reqheight() + 50:
         y -= y + modal_window.winfo_reqheight() + 50 - screen_height
+    y = max(50, y)
     modal_window.geometry(f"+{x}+{y}")
     modal_window.lift()
     modal_window.focus_force()

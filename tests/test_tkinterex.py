@@ -1,6 +1,7 @@
 """Tests for tkinterex."""
 
 import tkinter as tk
+from unittest.mock import MagicMock
 
 import pytest
 
@@ -303,6 +304,21 @@ class TestShowModalWindow:
         root.after(0, dialog.destroy)
         show_modal_window(root, dialog)
         assert not dialog.winfo_exists()
+
+    def test_window_x_remains_positive_when_too_wide(self):
+        """Keep a wide modal window from being placed off the left edge."""
+        parent = MagicMock()
+        parent.winfo_rootx.return_value = 100
+        parent.winfo_rooty.return_value = 100
+        parent.winfo_screenwidth.return_value = 200
+        parent.winfo_screenheight.return_value = 800
+        modal_window = MagicMock()
+        modal_window.winfo_reqwidth.return_value = 500
+        modal_window.winfo_reqheight.return_value = 200
+
+        show_modal_window(parent, modal_window)
+
+        modal_window.geometry.assert_called_once_with("+15+100")
 
     def test_window_clamped_when_y_too_small(self, root):
         """Test that the modal window is clamped to the screen when
