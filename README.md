@@ -71,6 +71,32 @@ print(memo.value)
 root.mainloop()
 ```
 
+## Running Work with Progress
+
+Use `run_with_progress` to run a long-running operation in a background
+thread while displaying a modal progress dialog. The worker receives a
+progress callback, which accepts a value from `0.0` to `1.0`, and its return
+value is returned by `run_with_progress`.
+
+```python
+from tkinterex import run_with_progress
+
+
+def worker(report_progress):
+  for index in range(100):
+    do_work(index)
+    report_progress((index + 1) / 100)
+  return "completed"
+
+
+result = run_with_progress(root, "Working...", worker)
+print(result)  # "completed"
+```
+
+The dialog can be cancelled by the user. When that happens, the next call to
+the progress callback raises `OperationCanceledError`. Exceptions raised by
+the worker are also propagated to the caller.
+
 ## Version Bumping
 
 Use the provided PowerShell scripts to bump the version in `pyproject.toml`:
