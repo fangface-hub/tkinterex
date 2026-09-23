@@ -1,6 +1,6 @@
 [project]
 name = "tkinterex"
-version = "1.2.0"
+version = "1.2.1"
 description = "A package that adds extension features to tkinter"
 readme = "README_pypi.md"
 authors = [{ name = "fangface" }]

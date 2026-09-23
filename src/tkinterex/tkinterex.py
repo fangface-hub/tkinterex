@@ -6,8 +6,21 @@ from __future__ import annotations
 import queue
 import threading
 from collections.abc import Callable
-from tkinter import (END, LEFT, BooleanVar, Button, Frame, Label, Listbox,
-                     Scrollbar, StringVar, Text, Tk, Toplevel, ttk)
+from tkinter import (
+    END,
+    LEFT,
+    BooleanVar,
+    Button,
+    Frame,
+    Label,
+    Listbox,
+    Scrollbar,
+    StringVar,
+    Text,
+    Tk,
+    Toplevel,
+    ttk,
+)
 from tkinter.ttk import Checkbutton, Combobox, Entry
 from typing import TypeVar, cast
 
@@ -123,9 +136,9 @@ class ListboxEx(Frame):
         self.scrollbar.pack(side="right", fill="y")
 
         # Create Listbox
-        self.listbox = Listbox(self,
-                               yscrollcommand=self.scrollbar.set,
-                               **kwargs)
+        self.listbox = Listbox(
+            self, yscrollcommand=self.scrollbar.set, **kwargs
+        )
         self.listbox.pack(side="left", fill="both", expand=True)
 
         # Connect Scrollbar to Listbox
@@ -229,13 +242,13 @@ class ListWindow(Toplevel):
         for item in items:
             self.lst.insert(END, item)
         frm2 = Frame(self)
-        self.select_button = Button(frm2,
-                                    text="Select",
-                                    command=self.select_item)
+        self.select_button = Button(
+            frm2, text="Select", command=self.select_item
+        )
         self.select_button.pack(pady=10, side=LEFT)
-        self.cancel_button = Button(frm2,
-                                    text="Cancel",
-                                    command=self.close_window)
+        self.cancel_button = Button(
+            frm2, text="Cancel", command=self.close_window
+        )
         self.cancel_button.pack(pady=10, side=LEFT)
         frm2.pack()
 
@@ -376,10 +389,9 @@ def run_with_progress(
     frame = ttk.Frame(dialog, padding=12)
     frame.pack(fill="both", expand=True)
     ttk.Label(frame, text=title).pack(anchor="w")
-    progress_bar = ttk.Progressbar(frame,
-                                   mode="determinate",
-                                   maximum=100,
-                                   length=280)
+    progress_bar = ttk.Progressbar(
+        frame, mode="determinate", maximum=100, length=280
+    )
     progress_bar.pack(fill="x", pady=(8, 0))
     percent_text = StringVar(parent, "0%")
     ttk.Label(frame, textvariable=percent_text).pack(anchor="e", pady=(6, 0))
@@ -421,19 +433,21 @@ def run_with_progress(
         done = False
         while True:
             try:
-                kind, payload = updates.get_nowait()
+                kind, value = updates.get_nowait()
             except queue.Empty:
                 break
             if kind == "progress":
-                percent = int(max(0.0, min(1.0, float(payload))) * 100)
+                percent = int(
+                    max(0.0, min(1.0, float(cast(float, value)))) * 100
+                )
                 if percent > progress_bar["value"]:
                     progress_bar["value"] = percent
                     percent_text.set(f"{percent}%")
             elif kind == "result":
-                results.append(cast(Result, payload))
+                results.append(cast(Result, value))
                 done = True
             elif kind == "error":
-                errors.append(cast(BaseException, payload))
+                errors.append(cast(BaseException, value))
                 done = True
         if done:
             done_var.set(True)
